@@ -1,5 +1,9 @@
 // app/page.tsx
 "use client";
+import { Button } from '@/components/ui/button';
+import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { MessageCirclePlusIcon, Send } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -16,9 +20,31 @@ export default function Home() {
   }, []); // The empty array ensures this runs only once on component mount
 
   return (
-    <main>
-      <h1>Next.js Frontend</h1>
-      <p>Message from Go Backend: <strong>{message}</strong></p>
-    </main>
+    <div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Hello, ask me anything!</CardTitle>
+          <CardAction className='flex gap-1'>
+            <Button className='cursor-pointer'>
+              <MessageCirclePlusIcon />
+              Ask now
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent className='flex justify-center'>
+          <Card className='w-290'>
+            <CardContent>
+              <Textarea placeholder='Type what you want to ask...'/>
+            </CardContent>
+            <CardFooter className='flex justify-end'>
+              <Button className='cursor-pointer'>
+                <Send />
+                Submit
+              </Button>
+            </CardFooter>
+          </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

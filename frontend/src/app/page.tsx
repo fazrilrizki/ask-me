@@ -1,9 +1,10 @@
 // app/page.tsx
 "use client";
+import QuestionCard from '@/components/shared/questions/QuestionCard';
 import { Button } from '@/components/ui/button';
 import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { MessageCirclePlusIcon, Send } from 'lucide-react';
+import { MessageCirclePlusIcon, Send, Star, ThumbsDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -31,8 +32,8 @@ export default function Home() {
             </Button>
           </CardAction>
         </CardHeader>
-        <CardContent className='flex justify-center'>
-          <Card className='w-290'>
+        <CardContent className='grid grid-cols-1 gap-4'>
+          <Card className='col-span-full hidden'>
             <CardContent>
               <Textarea placeholder='Type what you want to ask...'/>
             </CardContent>
@@ -43,6 +44,9 @@ export default function Home() {
               </Button>
             </CardFooter>
           </Card>
+          {[...Array(5)].map((_, index) => (
+            <QuestionCard key={index} />
+          ))}
         </CardContent>
       </Card>
     </div>

@@ -8,17 +8,12 @@ import { MessageCirclePlusIcon, Send, Star, ThumbsDown } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-  // State to store the message from the backend
   const [message, setMessage] = useState('Loading...');
+  const [isAsking, setIsAsking] = useState(false);
 
-  useEffect(() => {
-    // Fetch data from your Go backend API
-    fetch('http://localhost:8080/api/message')
-      .then((res) => res.json())
-      .then((data) => {
-        setMessage(data.message);
-      });
-  }, []); // The empty array ensures this runs only once on component mount
+  const handleAskNowClick = () => {
+    setIsAsking(!isAsking);
+  }
 
   return (
     <div>
@@ -26,14 +21,14 @@ export default function Home() {
         <CardHeader>
           <CardTitle>Hello, ask me anything!</CardTitle>
           <CardAction className='flex gap-1'>
-            <Button className='cursor-pointer'>
+            <Button className='cursor-pointer' onClick={handleAskNowClick}>
               <MessageCirclePlusIcon />
               Ask now
             </Button>
           </CardAction>
         </CardHeader>
         <CardContent className='grid grid-cols-1 gap-4'>
-          <Card className='col-span-full hidden'>
+          <Card id='card-form-ask' className={`col-span-full ${!isAsking ? 'hidden' : ''}`}>
             <CardContent>
               <Textarea placeholder='Type what you want to ask...'/>
             </CardContent>

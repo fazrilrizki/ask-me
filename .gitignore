@@ -41,3 +41,5 @@ yarn-error.log*
 # TypeScript
 /frontend/*.tsbuildinfo
 /frontend/next-env.d.ts
+
+.env

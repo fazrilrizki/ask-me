@@ -1,35 +1,21 @@
 package database
 
 import (
-	"database/sql"
-	"fmt"
-	"log"
-	"os"
+	"self-project/ask-me/internal/models"
 
-	"github.com/go-sql-driver/mysql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-func Connect(env string) (*sql.DB, error) {
-	config := mysql.Config{
-		User:                 os.Getenv("DATABASE_USER"),
-		Passwd:               os.Getenv("DATABASE_PASS"),
-		Net:                  "tcp",
-		Addr:                 os.Getenv("DATABASE_ADDRESS"),
-		DBName:               os.Getenv("DATABASE_NAME"),
-		AllowNativePasswords: true,
-		ParseTime:            true,
-	}
+var DB *gorm.DB
 
-	db, err := sql.Open(os.Getenv("DATABASE_DRIVER"), config.FormatDSN())
+func Connect() {
+	database, err := gorm.Open(mysql.Open("root:fazril@tcp(localhost:3306)/ask-me"))
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	pingErr := db.Ping()
-	if pingErr != nil {
-		log.Fatal(pingErr)
-	}
+	database.AutoMigrate(&models.Question{})
 
-	fmt.Println("Database Connected")
-	return db, err
+	DB = database
 }

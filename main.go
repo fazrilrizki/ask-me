@@ -1,18 +1,15 @@
 package main
 
 import (
-	"log"
-	"net/http"
+	"self-project/ask-me/internal/controllers"
 	"self-project/ask-me/pkg/database"
-	"self-project/ask-me/pkg/environment"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	env, err := environment.Load()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	database.Connect(env)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	database.Connect()
+	router := gin.Default()
+	router.POST("/question", controllers.StoreQuestion)
+	router.Run()
 }

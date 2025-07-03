@@ -10,6 +10,6 @@ import (
 func main() {
 	database.Connect()
 	router := gin.Default()
-	router.POST("/question", controllers.StoreQuestion)
+	router.POST("/api/question", controllers.StoreQuestion)
 	router.Run()
 }

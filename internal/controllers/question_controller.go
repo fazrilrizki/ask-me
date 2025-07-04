@@ -8,6 +8,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func IndexQuestion(c *gin.Context) {
+	var question []models.Question
+	database.DB.Find(&question)
+
+	c.JSON(http.StatusOK, gin.H{"questions": question})
+}
+
 func StoreQuestion(c *gin.Context) {
 	var question models.Question
 

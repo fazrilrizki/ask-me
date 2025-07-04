@@ -1,16 +1,16 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Star, ThumbsDown } from "lucide-react";
 
-export default function QuestionCard() {
+export default function QuestionCard({
+    question
+}: {question : string}) {
     return (
         <Card>
             <CardHeader>
                 <CardTitle>User 01</CardTitle>
             </CardHeader>
             <CardContent>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum sequi nihil voluptatibus dignissimos
-                    molestias unde molestiae ut officia error iste voluptas, blanditiis, natus vero non id temporibus
-                    illo dicta dolorum!</p>
+                <p>{question}</p>
             </CardContent>
             <CardFooter className='flex justify-end gap-2'>
                 <div className='rounded-lg border-2 border-black p-1 cursor-pointer'>

@@ -16,6 +16,7 @@
     const [message, setMessage] = useState('Loading...');
     const [isAsking, setIsAsking] = useState(false);
     const [questions, setQuestions] = useState<Question[]>([]);
+    const [askText, setAskText] = useState('');
 
     const handleAskNowClick = () => {
       setIsAsking(!isAsking);
@@ -40,6 +41,32 @@
       fetchQuestions();
     }, [])
 
+    const handleSubmit = async () => {
+      if (!askText.trim()) return;
+
+      try {
+        const response = await fetch('http://localhost:8080/api/questions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              question: askText,
+            }),
+        });
+
+        const data = await response.json();
+
+        setQuestions([data.question, ...questions]);
+        setAskText('');
+
+
+        console.log(response);
+      } catch (error) {
+        console.error('Error submitting question:', error);
+      }
+    }
+
     return (
       <div>
         <Card>
@@ -55,10 +82,10 @@
           <CardContent className='grid grid-cols-1 gap-4'>
             <Card id='card-form-ask' className={`col-span-full ${!isAsking ? 'hidden' : ''}`}>
               <CardContent>
-                <Textarea placeholder='Type what you want to ask...'/>
+                <Textarea placeholder='Type what you want to ask...' value={askText} onChange={(e) => setAskText(e.target.value)}/>
               </CardContent>
               <CardFooter className='flex justify-end'>
-                <Button className='cursor-pointer'>
+                <Button className='cursor-pointer' onClick={handleSubmit}>
                   <Send />
                   Submit
                 </Button>

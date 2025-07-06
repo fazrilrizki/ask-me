@@ -3,20 +3,36 @@
   import QuestionCard from '@/components/shared/questions/QuestionCard';
   import { Button } from '@/components/ui/button';
   import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+  import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+  import { Input } from '@/components/ui/input';
   import { Textarea } from '@/components/ui/textarea';
+import { zodResolver } from '@hookform/resolvers/zod';
   import { MessageCirclePlusIcon, Send, Star, ThumbsDown } from 'lucide-react';
   import { useEffect, useState } from 'react';
+  import { useForm } from 'react-hook-form';
+import z from 'zod';
 
   type Question = {
     id: number,
     question: string,
   }
 
+  const formSchema = z.object({
+      name: z.string().optional(),
+      question: z.string().min(1, "Question is required."),
+  }) 
+
   export default function Home() {
     const [message, setMessage] = useState('Loading...');
     const [isAsking, setIsAsking] = useState(false);
     const [questions, setQuestions] = useState<Question[]>([]);
-    const [askText, setAskText] = useState('');
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        name: "",
+        question: ""
+      },
+    })
 
     const handleAskNowClick = () => {
       setIsAsking(!isAsking);
@@ -41,27 +57,22 @@
       fetchQuestions();
     }, [])
 
-    const handleSubmit = async () => {
-      if (!askText.trim()) return;
-
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
       try {
         const response = await fetch('http://localhost:8080/api/questions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              question: askText,
-            }),
+          },
+          body: JSON.stringify({
+            question: values.question,
+          }),
         });
 
         const data = await response.json();
 
         setQuestions([data.question, ...questions]);
-        setAskText('');
-
-
-        console.log(response);
+        form.reset();
       } catch (error) {
         console.error('Error submitting question:', error);
       }
@@ -81,15 +92,51 @@
           </CardHeader>
           <CardContent className='grid grid-cols-1 gap-4'>
             <Card id='card-form-ask' className={`col-span-full ${!isAsking ? 'hidden' : ''}`}>
-              <CardContent>
-                <Textarea placeholder='Type what you want to ask...' value={askText} onChange={(e) => setAskText(e.target.value)}/>
-              </CardContent>
-              <CardFooter className='flex justify-end'>
-                <Button className='cursor-pointer' onClick={handleSubmit}>
-                  <Send />
-                  Submit
-                </Button>
-              </CardFooter>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <CardContent className='flex flex-col gap-y-4 mb-4'>
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Type your name..." {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="question"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className='gap-1'>
+                            Question
+                            <span className='text-red-500'>*</span>
+                          </FormLabel>
+                          <FormControl>
+                             <Textarea
+                              placeholder='Type what you want to ask...'
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CardContent>
+                  <CardFooter className='flex justify-end'>
+                    <Button type="submit" className='cursor-pointer'>
+                      <Send />
+                      Submit
+                    </Button>
+                  </CardFooter>
+                </form>
+              </Form>
             </Card>
             {questions.map((q, index) => (
               <QuestionCard question={q.question} key={q.id || index} />

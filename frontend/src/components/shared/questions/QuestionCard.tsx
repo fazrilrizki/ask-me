@@ -2,12 +2,12 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Star, ThumbsDown } from "lucide-react";
 
 export default function QuestionCard({
-    question
-}: {question : string}) {
+    user_name, question
+}: {user_name : string, question : string}) {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>User 01</CardTitle>
+                <CardTitle>{user_name ? user_name : 'Guest'}</CardTitle>
             </CardHeader>
             <CardContent>
                 <p>{question}</p>

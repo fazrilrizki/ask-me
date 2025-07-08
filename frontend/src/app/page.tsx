@@ -14,6 +14,7 @@ import z from 'zod';
 
   type Question = {
     id: number,
+    user_name: string,
     question: string,
   }
 
@@ -65,6 +66,7 @@ import z from 'zod';
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            user_name: values.name,
             question: values.question,
           }),
         });
@@ -139,7 +141,7 @@ import z from 'zod';
               </Form>
             </Card>
             {questions.map((q, index) => (
-              <QuestionCard question={q.question} key={q.id || index} />
+              <QuestionCard user_name={q.user_name} question={q.question} key={q.id || index} />
             ))}
           </CardContent>
         </Card>

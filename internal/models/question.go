@@ -1,7 +1,8 @@
 package models
 
 type Question struct {
-	Id       int64  `gorm:"primaryKey" json:"id"`
-	UserName string `gorm:"type:varchar(255)" json:"user_name"`
-	Question string `gorm:"type:varchar(255)" json:"question"`
+	Id        int64  `gorm:"primaryKey" json:"id"`
+	UserName  string `gorm:"type:varchar(255)" json:"user_name"`
+	Question  string `gorm:"type:varchar(255)" json:"question"`
+	CreatedAt string `json:"created_at"`
 }

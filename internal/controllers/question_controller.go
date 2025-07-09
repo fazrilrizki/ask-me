@@ -10,7 +10,7 @@ import (
 
 func IndexQuestion(c *gin.Context) {
 	var question []models.Question
-	database.DB.Find(&question)
+	database.DB.Order("created_at desc").Find(&question)
 
 	c.JSON(http.StatusOK, gin.H{"questions": question})
 }

@@ -3,13 +3,14 @@
   import QuestionCard from '@/components/shared/questions/QuestionCard';
   import { Button } from '@/components/ui/button';
   import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-  import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+  import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
   import { Input } from '@/components/ui/input';
   import { Textarea } from '@/components/ui/textarea';
   import { zodResolver } from '@hookform/resolvers/zod';
-  import { MessageCirclePlusIcon, Send, Star, ThumbsDown } from 'lucide-react';
+  import { MessageCirclePlusIcon, Send } from 'lucide-react';
   import { useEffect, useState } from 'react';
   import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
   import z from 'zod';
 
   type Question = {
@@ -24,7 +25,6 @@
   }) 
 
   export default function Home() {
-    const [message, setMessage] = useState('Loading...');
     const [isAsking, setIsAsking] = useState(false);
     const [questions, setQuestions] = useState<Question[]>([]);
     const form = useForm<z.infer<typeof formSchema>>({
@@ -75,6 +75,8 @@
 
         setQuestions([data.question, ...questions]);
         form.reset();
+        setIsAsking(false);
+        toast.success("Your question has been submitted!")
       } catch (error) {
         console.error('Error submitting question:', error);
       }

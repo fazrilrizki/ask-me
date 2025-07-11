@@ -1,9 +1,19 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Star, ThumbsDown } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { MessageCirclePlus, Star, ThumbsDown } from "lucide-react";
+import AnswerCard from "./AnswerCard";
+import { useState } from "react";
 
 export default function QuestionCard({
     user_name, question
-}: {user_name : string, question : string}) {
+}: {user_name : string, question : string}) 
+{
+    const [isAnswering, setIsAnswering] = useState(false);
+
+    const handleAnswerButtonClick = () => {
+        setIsAnswering(!isAnswering);
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -11,14 +21,39 @@ export default function QuestionCard({
             </CardHeader>
             <CardContent>
                 <p>{question}</p>
+                {isAnswering && <AnswerCard onCancel={() => setIsAnswering(false)}/>}
             </CardContent>
             <CardFooter className='flex justify-end gap-2'>
-                <div className='rounded-lg border-2 border-black p-1 cursor-pointer'>
-                    <Star size={16} />
-                </div>
-                <div className='rounded-lg border-2 border-black p-1 cursor-pointer'>
-                    <ThumbsDown size={16} />
-                </div>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div className='rounded-lg border-2 border-black p-1 cursor-pointer' onClick={handleAnswerButtonClick}>
+                            <MessageCirclePlus size={16}/>
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        Answer
+                    </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div className='rounded-lg border-2 border-black p-1 cursor-pointer'>
+                            <Star size={16} />
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        Favourite
+                    </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div className='rounded-lg border-2 border-black p-1 cursor-pointer'>
+                            <ThumbsDown size={16} />
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        Dislike
+                    </TooltipContent>
+                </Tooltip>
             </CardFooter>
         </Card>
     )

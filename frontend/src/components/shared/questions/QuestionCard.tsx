@@ -5,8 +5,8 @@ import AnswerCard from "./AnswerCard";
 import { useState } from "react";
 
 export default function QuestionCard({
-    user_name, question
-}: {user_name : string, question : string}) 
+    user_name, question_id, question
+}: {user_name : string, question_id: number, question : string}) 
 {
     const [isAnswering, setIsAnswering] = useState(false);
 
@@ -21,7 +21,7 @@ export default function QuestionCard({
             </CardHeader>
             <CardContent>
                 <p>{question}</p>
-                {isAnswering && <AnswerCard onCancel={() => setIsAnswering(false)}/>}
+                {isAnswering && <AnswerCard questionId={question_id} onCancel={() => setIsAnswering(false)}/>}
             </CardContent>
             <CardFooter className='flex justify-end gap-2'>
                 <Tooltip>

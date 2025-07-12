@@ -1,8 +1,9 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { MessageCirclePlus, Star, ThumbsDown } from "lucide-react";
-import AnswerCard from "./AnswerCard";
+import AnswerCardForm from "./AnswerCardForm";
 import { useState } from "react";
+import Answers from "../answers/Answers";
 
 export default function QuestionCard({
     user_name, question_id, question
@@ -19,9 +20,10 @@ export default function QuestionCard({
             <CardHeader>
                 <CardTitle>{user_name ? user_name : 'Guest'}</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col gap-4">
                 <p>{question}</p>
-                {isAnswering && <AnswerCard questionId={question_id} onCancel={() => setIsAnswering(false)}/>}
+                {isAnswering && <AnswerCardForm questionId={question_id} onCancel={() => setIsAnswering(false)}/>}
+                <Answers/>
             </CardContent>
             <CardFooter className='flex justify-end gap-2'>
                 <Tooltip>

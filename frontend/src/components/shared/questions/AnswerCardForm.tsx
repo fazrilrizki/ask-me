@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
-type AnswerCardProps = {
+type AnswerCardFormProps = {
     questionId: number;
     onCancel: () => void;
 }
@@ -20,7 +20,7 @@ const formAnswerSchema = z.object({
     answer: z.string().min(1, "Answer is required."),
 })
 
-export default function AnswerCard({ questionId, onCancel }: AnswerCardProps) {
+export default function AnswerCardForm({ questionId, onCancel }: AnswerCardFormProps) {
     const form = useForm<z.infer<typeof formAnswerSchema>>({
             resolver: zodResolver(formAnswerSchema),
             defaultValues: {

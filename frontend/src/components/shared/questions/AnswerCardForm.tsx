@@ -1,21 +1,26 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleX, MessageCircleReply } from "lucide-react";
+import { userAgent } from "next/server";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
-type AnswerCardProps = {
+type AnswerCardFormProps = {
+    questionId: number;
     onCancel: () => void;
 }
 
 const formAnswerSchema = z.object({
+    user_name: z.string().optional(),
     answer: z.string().min(1, "Answer is required."),
 })
 
-export default function AnswerCard({ onCancel }: AnswerCardProps) {
+export default function AnswerCardForm({ questionId, onCancel }: AnswerCardFormProps) {
     const form = useForm<z.infer<typeof formAnswerSchema>>({
             resolver: zodResolver(formAnswerSchema),
             defaultValues: {
@@ -24,13 +29,46 @@ export default function AnswerCard({ onCancel }: AnswerCardProps) {
     })
 
     const onSubmit = async (values: z.infer<typeof formAnswerSchema>) => {
-        alert("submit answer")
+        try {
+            const response = await fetch(`http://localhost:8080/api/questions/${questionId}/answer`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_name: values.user_name,
+                    answer: values.answer,
+                })
+            })
+
+            const data = await response.json();
+            console.log(data);
+
+            toast.success("Your answer has been submitted!");
+            form.reset();
+            onCancel();
+        } catch (error) {
+            console.error("Error submitting answer:", error);
+        }
     }
     return (
         <Card className="mt-4">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <CardContent>
+                    <CardContent className="flex flex-col gap-4">
+                        <FormField
+                            control={form.control}
+                            name="user_name"
+                            render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Name</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Type your name..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                        />
                         <FormField
                             control={form.control}
                             name="answer"

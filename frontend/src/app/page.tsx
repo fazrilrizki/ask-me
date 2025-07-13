@@ -143,7 +143,7 @@ import { toast } from 'sonner';
               </Form>
             </Card>
             {questions.map((q, index) => (
-              <QuestionCard user_name={q.user_name} question={q.question} key={q.id || index} />
+              <QuestionCard user_name={q.user_name} question={q.question} question_id={q.id} key={q.id || index} />
             ))}
           </CardContent>
         </Card>

@@ -4,10 +4,11 @@ import { MessageCirclePlus, Star, ThumbsDown } from "lucide-react";
 import AnswerCardForm from "./AnswerCardForm";
 import { useState } from "react";
 import Answers from "../answers/Answers";
+import { AnswerType } from "@/types";
 
 export default function QuestionCard({
-    user_name, question_id, question
-}: {user_name : string, question_id: number, question : string}) 
+    user_name, question_id, question, answers
+}: {user_name : string, question_id: number, question : string, answers: AnswerType[]}) 
 {
     const [isAnswering, setIsAnswering] = useState(false);
 
@@ -23,7 +24,7 @@ export default function QuestionCard({
             <CardContent className="flex flex-col gap-4">
                 <p>{question}</p>
                 {isAnswering && <AnswerCardForm questionId={question_id} onCancel={() => setIsAnswering(false)}/>}
-                <Answers/>
+                <Answers answers={answers}/>
             </CardContent>
             <CardFooter className='flex justify-end gap-2'>
                 <Tooltip>

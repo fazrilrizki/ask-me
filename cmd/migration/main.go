@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	database, err := gorm.Open(mysql.Open("root:herd@tcp(localhost:3306)/ask-me"))
+	database, err := gorm.Open(mysql.Open("root:fazril@tcp(localhost:3306)/ask-me"))
 	if err != nil {
 		panic(err)
 	}

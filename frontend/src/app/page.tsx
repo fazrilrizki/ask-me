@@ -6,17 +6,19 @@
   import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
   import { Input } from '@/components/ui/input';
   import { Textarea } from '@/components/ui/textarea';
+  import { AnswerType } from '@/types';
   import { zodResolver } from '@hookform/resolvers/zod';
   import { MessageCirclePlusIcon, Send } from 'lucide-react';
   import { useEffect, useState } from 'react';
   import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+  import { toast } from 'sonner';
   import z from 'zod';
 
   type Question = {
     id: number,
     user_name: string,
     question: string,
+    answers: AnswerType[]
   }
 
   const formSchema = z.object({
@@ -143,7 +145,7 @@ import { toast } from 'sonner';
               </Form>
             </Card>
             {questions.map((q, index) => (
-              <QuestionCard user_name={q.user_name} question={q.question} question_id={q.id} key={q.id || index} />
+              <QuestionCard user_name={q.user_name} question={q.question} question_id={q.id} answers={q.answers} key={q.id || index} />
             ))}
           </CardContent>
         </Card>

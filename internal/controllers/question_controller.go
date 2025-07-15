@@ -9,10 +9,19 @@ import (
 )
 
 func IndexQuestion(c *gin.Context) {
-	var question []models.Question
-	database.DB.Order("created_at desc").Find(&question)
+	var questions []models.Question
 
-	c.JSON(http.StatusOK, gin.H{"questions": question})
+	err := database.DB.
+		Preload("Answers").
+		Order("created_at desc").
+		Find(&questions).Error
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"questions": questions})
 }
 
 func StoreQuestion(c *gin.Context) {

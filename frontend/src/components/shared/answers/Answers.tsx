@@ -5,7 +5,7 @@ export default function Answers({ answers }: { answers: AnswerType[] }) {
     return (
         <div className="flex flex-col gap-4">
             {answers.map((answer) => (
-                <Card>
+                <Card key={answer.id}>
                     <CardHeader>
                         <CardTitle>{answer.user_name ?? 'Guest'}</CardTitle>
                     </CardHeader>

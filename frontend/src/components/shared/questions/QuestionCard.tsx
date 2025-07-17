@@ -11,10 +11,15 @@ export default function QuestionCard({
 }: {user_name : string, question_id: number, question : string, answers: AnswerType[]}) 
 {
     const [isAnswering, setIsAnswering] = useState(false);
+    const [newAnswer, handleNewAnswer] = useState(answers);
 
     const handleAnswerButtonClick = () => {
         setIsAnswering(!isAnswering);
     }
+
+    const handleAnswerSubmitted = (newAnswer: AnswerType) => {
+        handleNewAnswer((prev) => [newAnswer, ...prev]);
+      };
 
     return (
         <Card>
@@ -23,8 +28,10 @@ export default function QuestionCard({
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
                 <p>{question}</p>
-                {isAnswering && <AnswerCardForm questionId={question_id} onCancel={() => setIsAnswering(false)}/>}
-                <Answers answers={answers}/>
+                {isAnswering && <AnswerCardForm questionId={question_id} 
+                onCancel={() => setIsAnswering(false)}
+                onSubmitted={handleAnswerSubmitted}/>}
+                <Answers answers={newAnswer}/>
             </CardContent>
             <CardFooter className='flex justify-end gap-2'>
                 <Tooltip>

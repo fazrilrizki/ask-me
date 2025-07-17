@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { AnswerType } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleX, MessageCircleReply } from "lucide-react";
 import { userAgent } from "next/server";
@@ -13,6 +14,7 @@ import z from "zod";
 type AnswerCardFormProps = {
     questionId: number;
     onCancel: () => void;
+    onSubmitted?: (answer: AnswerType) => void;
 }
 
 const formAnswerSchema = z.object({
@@ -20,7 +22,7 @@ const formAnswerSchema = z.object({
     answer: z.string().min(1, "Answer is required."),
 })
 
-export default function AnswerCardForm({ questionId, onCancel }: AnswerCardFormProps) {
+export default function AnswerCardForm({ questionId, onCancel, onSubmitted }: AnswerCardFormProps) {
     const form = useForm<z.infer<typeof formAnswerSchema>>({
             resolver: zodResolver(formAnswerSchema),
             defaultValues: {
@@ -42,11 +44,11 @@ export default function AnswerCardForm({ questionId, onCancel }: AnswerCardFormP
             })
 
             const data = await response.json();
-            console.log(data);
 
             toast.success("Your answer has been submitted!");
             form.reset();
             onCancel();
+            onSubmitted?.(data.answer);
         } catch (error) {
             console.error("Error submitting answer:", error);
         }

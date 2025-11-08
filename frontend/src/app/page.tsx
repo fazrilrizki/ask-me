@@ -31,6 +31,7 @@ import z from "zod";
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -227,18 +228,19 @@ export default function Home() {
           </Card>
           {/* Hapus jika production sudah terhubung dengan backend */}
           <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Fitur Belum Tersedia</AlertDialogTitle>
-                <AlertDialogDescription>
-                  YEKK BELUM BISA TANYA! LAGI ONGOING FITUR TERSEBUT!
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogAction>Oke, Paham!</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Maaf!</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Maaf yaaa, fitur submit belum tersedia saat ini! Mohon ditunggu seperti beli mie gacoan :p.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           {questions.map((q, index) => (
             <QuestionCard
               user_name={q.user_name}

@@ -26,7 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageCirclePlusIcon, Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 import z from "zod";
 import {
   AlertDialog,
@@ -91,7 +91,7 @@ export default function Home() {
     fetchQuestions();
   }, []);
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = () => {
     // Logika fetch (try...catch) dihapus
     
     // Tampilkan modal

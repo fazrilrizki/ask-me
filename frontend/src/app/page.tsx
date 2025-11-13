@@ -26,7 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { MessageCirclePlusIcon, Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-// import { toast } from "sonner";
+import { toast } from "sonner";
 import z from "zod";
 import {
   AlertDialog,
@@ -92,42 +92,42 @@ export default function Home() {
     fetchQuestions();
   }, []);
 
-  const onSubmit = () => {
-    // Logika fetch (try...catch) dihapus
-    
-    // Tampilkan modal
-    setIsModalOpen(true);
+//   const onSubmit = () => {
+//     // Logika fetch (try...catch) dihapus
+//     
+//     // Tampilkan modal
+//     setIsModalOpen(true);
 
-    // Reset form dan sembunyikan panel seperti logika Anda sebelumnya
-    form.reset();
-    setIsAsking(false);
-  }
+//     // Reset form dan sembunyikan panel seperti logika Anda sebelumnya
+//     form.reset();
+//     setIsAsking(false);
+//   }
 
   // Comment dulu untuk di production
-  // const onSubmit = async (values: z.infer<typeof formSchema>) => {
-  //   try {
-  //     const response = await fetch("http://localhost:8080/api/questions", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         // 'values.name' akan berisi "Anonymous" jika checkbox dicentang
-  //         user_name: values.name,
-  //         question: values.question,
-  //       }),
-  //     });
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/questions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // 'values.name' akan berisi "Anonymous" jika checkbox dicentang
+          user_name: values.name,
+          question: values.question,
+        }),
+      });
 
-  //     const data = await response.json();
+      const data = await response.json();
 
-  //     setQuestions([data.question, ...questions]);
-  //     form.reset();
-  //     setIsAsking(false);
-  //     toast.success("Your question has been submitted!");
-  //   } catch (error) {
-  //     console.error("Error submitting question:", error);
-  //   }
-  // };
+      setQuestions([data.question, ...questions]);
+      form.reset();
+      setIsAsking(false);
+      toast.success("Your question has been submitted!");
+    } catch (error) {
+      console.error("Error submitting question:", error);
+    }
+  };
 
   return (
     <div>
@@ -227,7 +227,7 @@ export default function Home() {
             </Form>
           </Card>
           {/* Hapus jika production sudah terhubung dengan backend */}
-          <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          {/* <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>Maaf!</AlertDialogTitle>
@@ -240,7 +240,7 @@ export default function Home() {
                 <AlertDialogAction>Continue</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
-          </AlertDialog>
+          </AlertDialog> */}
           {questions.map((q, index) => (
             <QuestionCard
               user_name={q.user_name}

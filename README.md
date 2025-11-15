@@ -17,6 +17,8 @@
 
  The backend server is responsible for the API.
 
+ 1.  Copy .env.example and make new file .env.
+ 2.  Update .env key according with your configuration.
  1.  Open a terminal in the project's root directory (`c:\self-project\ask-me`).
  2.  Run the following command to start the Go server:
 

@@ -23,23 +23,15 @@ export default function QuestionCard({
     user_name, 
     question_id, 
     question, 
-    answers,
-    favorite_count, // TAMBAHKAN INI
-    dislike_count   // TAMBAHKAN INI
+    answers
 }: {
     user_name: string,
     question_id: number,
     question: string,
     answers: AnswerType[],
-    favorite_count: number, // TAMBAHKAN INI
-    dislike_count: number   // TAMBAHKAN INI
 }) {
     const [isAnswering, setIsAnswering] = useState(false);
     const [currentAnswers, setCurrentAnswers] = useState(answers);
-
-    // --- State lokal untuk vote count (Optimistic UI) ---
-    const [favCount, setFavCount] = useState(favorite_count);
-    const [dislikeCount, setDislikeCount] = useState(dislike_count);
 
     const handleAnswerButtonClick = () => {
         setIsAnswering(!isAnswering);
@@ -77,10 +69,6 @@ export default function QuestionCard({
             }
 
             const data = await response.json();
-
-            // Update state dengan data baru dari server
-            setFavCount(data.favorite_count);
-            setDislikeCount(data.dislike_count);
 
         } catch (error) {
             console.error("Failed to submit vote:", error);
@@ -125,7 +113,7 @@ export default function QuestionCard({
                     <TooltipContent>Favourite</TooltipContent>
                 </Tooltip>
                 {/* Tampilkan count */}
-                <span className="text-sm font-medium">{favCount}</span> 
+                <span className="text-sm font-medium"></span> 
 
                 {/* --- Tombol Dislike --- */}
                 <Tooltip>
@@ -138,7 +126,7 @@ export default function QuestionCard({
                     <TooltipContent>Dislike</TooltipContent>
                 </Tooltip>
                 {/* Tampilkan count */}
-                <span className="text-sm font-medium">{dislikeCount}</span>
+                <span className="text-sm font-medium"></span>
 
             </CardFooter>
         </Card>

@@ -14,8 +14,10 @@ func main() {
 		panic(err)
 	}
 
-	database.AutoMigrate(&models.Question{})
-	database.AutoMigrate(&models.Answer{})
+	database.AutoMigrate(
+		&models.Question{},
+		&models.Answer{},
+		&models.QuestionVote{})
 
 	fmt.Printf("Migrate success!")
 }

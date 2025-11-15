@@ -1,3 +1,0 @@
-ALTER TABLE questions
-ADD COLUMN user_name VARCHAR(255) NULL
-AFTER id;
